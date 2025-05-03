@@ -158,7 +158,7 @@ import "../styles/global.css";
           const authHeader = 'Basic ' + btoa(`${username}:${password}`);
           
           // Make request to backend with auth header
-          await fetch(`http://127.0.0.1:3000/join?id=${gameId}&mode=${selectedMode}`, {
+          await fetch(`https://trollbotbackend-production.up.railway.app/join?id=${gameId}&mode=${selectedMode}`, {
             method: 'GET',
             headers: {
               'Authorization': authHeader
