@@ -1,0 +1,93 @@
+---
+import "../styles/global.css";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Login | My App</title>
+  </head>
+  <body class="bg-gray-900 text-gray-200 flex items-center justify-center min-h-screen p-4">
+    <div class="w-full max-w-md">
+      <div class="bg-gray-800 rounded-lg shadow-lg p-8">
+        <!-- Logo/Header -->
+        <div class="text-center mb-8">
+          <h1 class="text-2xl font-bold text-blue-400">TrollBot</h1>
+          <p class="text-gray-400 mt-2">Sign in to your account</p>
+        </div>
+        
+        <!-- Login Section -->
+        <div class="space-y-6">
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-300 mb-1">User</label>
+            <input 
+              id="email" 
+              class="w-full px-4 py-2 rounded-md bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" 
+              placeholder="hacker"
+            />
+          </div>
+          
+          <div>
+            <label for="password" class="block text-sm font-medium text-gray-300 mb-1">Password</label>
+            <input 
+              type="password" 
+              id="password" 
+              class="w-full px-4 py-2 rounded-md bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" 
+              placeholder="••••••••"
+            />
+          </div>
+          
+          <div>
+            <button 
+              class="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800"
+              id="loginButton"
+            >
+              Sign in
+            </button>
+
+            <script>
+              // Make handleSubmit a global function
+              window.handleSubmit = async function(e) {
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+
+                try {
+                  const response = await fetch('http://127.0.0.1:3000/login', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username: email, password: password }), // Match backend expected format
+                    mode: 'cors',
+                    credentials: 'include'
+                  });
+
+                  if (response.ok) {
+					console.log('Login successful');
+					alert('Login successful!');
+					window.location.href = `/dashboard?user=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
+                    // You could redirect to another page or update UI here
+                  } else {
+                    console.error('Login failed:', response.status);
+                    alert('Login failed: Invalid credentials');
+                  }
+                } catch (error) {
+                  console.error('Login failed:', error);
+                  alert('Failed to connect to login server. Please ensure the server is running.');
+                }
+              };
+
+              // Add event listener after DOM is loaded
+              document.addEventListener('DOMContentLoaded', function() {
+                document.getElementById('loginButton').addEventListener('click', handleSubmit);
+              });
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
